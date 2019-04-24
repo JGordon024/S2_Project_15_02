@@ -5,8 +5,8 @@
    Tutorial 13
    Case Problem 2
 
-   Author: 
-   Date:   
+   Author: Jacob Gordon
+   Date: 04/22/19
    
    Filename: dl_expenses.js
    
