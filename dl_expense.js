@@ -30,15 +30,15 @@
       Formats the value, "val", as U.S. currency.
       
 */
-
+// When the window loads, it runs a function that runs a for loop that allows for the input elements in in the table to change, then when the submit button is clicked it validates the summary
 window.addEventListener("load", function () {
-      var changingCells = document.querySelectorAll('table#travelExp input[class="sum"]');
+      var changingCells = document.querySelectorAll("table#travelExp input.sum");
       for (var i = 0; i < changingCells.length; i++) {
-            changingCells[i].addEventListener("onchange", calcExp);
+            changingCells[i].onchange = calcExp
       }
       document.getElementById("submitButton").addEventListener("click", validateSummary);
 })
-
+// Creates a function that validates the summary input text box area, it pops up with a custom message that says that they need to do it (if they did not do it)
 function validateSummary() {
       var summary = document.getElementById("summary");
       if (summary.validity.valueMissing) {
@@ -47,17 +47,34 @@ function validateSummary() {
             summary.setCustomValidity("")
       }
 }
-
-function calcClass() {
-      var sumFields = document.getElementsByClassName("sumClass");;
+// Creates a function that starts with 2 variables and then runs a for loop, it extracts the numeric value out of the sumfield variable and then if the itemvalue variable is a numeric value, it adds to sumTotal and the item value variables together. Finally, it returns the sumTotal
+function calcClass(sumClass) {
+      var sumFields = document.getElementsByClassName(sumClass);
       var sumTotal = 0;
       for (var i = 0; i < sumFields.length; i++) {
-            var itemValue = sumFields[i].parsefloat;
-            if (itemValue === NaN) {
-                  itemValue + itemValue;
+            var itemValue = parseFloat(sumFields[i].value);
+            if (!isNaN(itemValue)) {
+                  sumTotal += itemValue;
             }
+
+
       }
-      sumTotal.value
+      return sumTotal
+}
+//Creates a function that lets us change the value of the table rows in the travelExp table
+function calcExp() {
+      var expTable = document.querySelectorAll("table#travelExp tbody tr")
+      for (var i = 0; i < expTable.length; i++) {
+            document.getElementById("subtotal" + i).value = formatNumber(calcClass("date" + i), 2);
+      }
+      //Tracks the input element total's of each column and takes it to the 2nd decimal point
+      document.getElementById("mealTotal").value = formatNumber(calcClass("meal"), 2);
+      document.getElementById("transTotal").value = formatNumber(calcClass("trans"), 2);
+      document.getElementById("lodgeTotal").value = formatNumber(calcClass("lodge"), 2);
+      document.getElementById("otherTotal").value = formatNumber(calcClass("other"), 2);
+      document.getElementById("expTotal").value = formatUSCurrency(calcClass("sum"));
+
+
 }
 
 
